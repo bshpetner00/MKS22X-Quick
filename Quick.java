@@ -8,27 +8,19 @@ public class Quick {
 	}
 	public static int partition(int[] data, int start, int end) {
 		Random rand = new Random();
-		int i = rand.nextInt(end - start) + start;
-		int key = data[i];
-		swap(data,i,key,start,data[start]);
-		for (int j = start; j < end; j++) {
-			if (key > data[j]) {
-				int val = data[j];
-				for (int m = j-1; m > start; m--) {
-					if (m == start+1) {
-						data[m] = val;
-					}
-					else {
-						data[m] = data[m - 1];
-					}
-				}
+		int i = rand.nextInt(data.length); //chosing pivot index
+		int pivot = data[i]; //pivot value
+		swap(data,i,pivot,start,data[start]); //to start, put the pibot at the beginning
+		while (start < end) { //go through entire array
+			if (data[start+1] > data[start]) { //larger number ahead of smaller
+				swap(data,start+1,data[start+1],end,data[end]); //puts bigger numbers farther ahead
+				end--; //decrement hi index
+			}
+			else {
+				swap(data,start+1,data[start+1],start,data[start]); //put smaller number before larger
+				start++; //increment lo index
 			}
 		}
-		for (int x = start; x < end; x++) {
-			if (data[x] == key) {
-				return x;
-			}
-		}
-		return -1;
+		return start; //loop complete, start marks the spot
 	}
 }
