@@ -6,6 +6,7 @@ public class Quick {
 		data[i0] = v1;
 		data[i1] = v0;
 	}
+
 	public static int partition(int[] data, int start, int end) {
 		Random rand = new Random();
 		int i = rand.nextInt(data.length); //chosing pivot index
@@ -23,4 +24,41 @@ public class Quick {
 		}
 		return start; //loop complete, start marks the spot
 	}
+
+	public static int quickSelect(int[]data, int k) {
+		int start = 0;
+		int end = data.length-1;
+		int pivot = partition(data,start,end);
+		while (pivot <= k) {
+			pivot = partition(data,start,end);
+			if (pivot < k) {
+				start = pivot + 1;
+			}
+			else {
+				end = pivot - 1;
+			}
+		}
+		return data[k];
+	}
+
+	public static void quickSortH(int[]data, int lo, int hi) {
+		if (lo < hi) {
+			int p = partition(data,lo,hi);
+			quickSortH(data,lo,p-1);
+			quickSortH(data,p+1,hi);
+
+		}
+	}
+
+	public static void quicksort(int[] data) {
+		quickSortH(data, 0, data.length-1);
+	}
+
+	public static String toStringDebug(int[] data){
+      String result = "";
+      for (int i = 0; i < data.length; i++){
+          result += data[i];
+      }
+      return result;
+    }
 }
