@@ -3,22 +3,26 @@ import java.util.Arrays;
 
 public class Driver{
     public static void main(String[]args){
-
         //TEST RUNTIME
 
-        int[]ary = { 2, 10, 15, 23, 0,  5, 1, 3, -1, -1 ,-1 , 2, 3, 4, 1, 4,5, 10, 199, -19372};  //sorted :  {0,2,5,10,15,23}
-        /*System.out.println(Quick.quickselect( ary , 0 )); //would return 0
-        System.out.println(Quick.quickselect( ary , 1 ));  //would return 2
-        System.out.println(Quick.quickselect( ary , 2 ));  //would return 5
-        System.out.println(Quick.quickselect( ary , 3 ));  //would return 10
-        System.out.println(Quick.quickselect( ary , 4 )); // would return 15
-        System.out.println(Quick.quickselect( ary , 5 ));  //would return 23*/
-        long[] arytimes = sortTimes(ary);
+        int[]ary = {50,10,30,20,40,0};  //sorted :  {0,2,5,10,15,23}
+        System.out.println(Arrays.toString(ary));
+        Quick.partition(ary, 0, ary.length-1);
+        System.out.println(Arrays.toString(ary));
+        System.out.println(Quick.quickselect( ary , 0 )); //would return 0
+        System.out.println(Quick.quickselect( ary , 1 ));  //would return 10
+        System.out.println(Quick.quickselect( ary , 2 ));  //would return 20
+        System.out.println(Quick.quickselect( ary , 3 ));  //would return 30
+        System.out.println(Quick.quickselect( ary , 4 )); // would return 40
+        System.out.println(Quick.quickselect( ary , 5 ));  //would return 50*/
+    }
+}
+        /*long[] arytimes = sortTimes(ary);
         System.out.println(arytimes[0]);
-        System.out.println(arytimes[1]);
+        System.out.println(arytimes[1]);*/
 
 
-
+        /*
         for (int i = 1; i < 1000; i++) {
             try {
                 Random gen = new Random();
@@ -165,5 +169,4 @@ public class Driver{
             ary[i] = min;
             ary[indexOfMin] = storer;
         }
-    }
-}
+        */
