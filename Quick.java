@@ -9,36 +9,50 @@ public class Quick {
 
 	public static int partition(int[] data, int start, int end) {
 		Random rand = new Random();
-		int i = rand.nextInt(data.length); //chosing pivot index
-		int pivot = data[i]; //pivot value
-		swap(data,i,pivot,start,data[start]); //to start, put the pibot at the beginning
-		while (start < end) { //go through entire array
-			if (data[start+1] > data[start]) { //larger number ahead of smaller
-				swap(data,start+1,data[start+1],end,data[end]); //puts bigger numbers farther ahead
-				end--; //decrement hi index
+		int i = rand.nextInt(end - start + 1) + start; //chosing pivot index
+		int pivotVal = data[i]; //pivot value
+		swap(data,i,pivotVal,start,data[start]); //to start, put the pivot at the beginning
+		i = start;
+		pivotVal = end;
+		while (i < pivotVal) { //go through entire array
+			if (data[i+1] > data[i]) { //larger number ahead of smaller
+				swap(data,i+1,data[i+1],pivotVal,data[pivotVal]); //puts bigger numbers farther ahead
+				pivotVal--; //decrement boundary
 			}
 			else {
-				swap(data,start+1,data[start+1],start,data[start]); //put smaller number before larger
-				start++; //increment lo index
+				swap(data,i+1,data[i+1],i,data[i]); //put smaller number before larger
+				i++; //increment lo index
 			}
 		}
-		return start; //loop complete, start marks the spot
+		int p = start; //to fix the partition index
+		for (int q = start + 1; q <= end; q++) { //travel thru rest
+			if (data[q] < data[start]) {
+				p = q; //get correct index if current val is smaller than start
+			}
+			else if (data[q] > data[start]) {
+				q = end + 1; //get correct index if current val is greater than start
+			}
+		}
+		swap(data,start,data[start],p,data[p]); //swap the starting value and the corrected index to complete
+		return p; //partition index
 	}
 
-	public static int quickSelect(int[]data, int k) {
-		int start = 0;
-		int end = data.length-1;
-		int pivot = partition(data,start,end);
-		while (pivot <= k) {
-			pivot = partition(data,start,end);
+	public static int quickSelectH(int[]data, int k, int lo, int hi) {
+		int pivot = 0;
+		while (pivot != k) {
+			pivot = partition(data,lo,hi);
 			if (pivot < k) {
-				start = pivot + 1;
+				lo = pivot + 1;
 			}
 			else {
-				end = pivot - 1;
+				hi = pivot - 1;
 			}
 		}
 		return data[k];
+	}
+
+	public static int quickselect(int[]data, int k) {
+		return quickSelectH(data,k,0,data.length-1);
 	}
 
 	public static void quickSortH(int[]data, int lo, int hi) {
