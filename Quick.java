@@ -1,3 +1,5 @@
+//I brainstormed with Alex Thomp for creating my quickselect 
+
 import java.io.*;
 import java.util.*;
 
@@ -7,52 +9,45 @@ public class Quick {
 		data[i1] = v0;
 	}
 
-	public static int partition(int[] data, int start, int end) {
-		Random rand = new Random();
-		int i = rand.nextInt(end - start + 1) + start; //chosing pivot index
-		int pivotVal = data[i]; //pivot value
-		swap(data,i,pivotVal,start,data[start]); //to start, put the pivot at the beginning
-		i = start;
-		pivotVal = end;
-		while (i < pivotVal) { //go through entire array
-			if (data[i+1] > data[i]) { //larger number ahead of smaller
-				swap(data,i+1,data[i+1],pivotVal,data[pivotVal]); //puts bigger numbers farther ahead
-				pivotVal--; //decrement boundary
-			}
-			else {
-				swap(data,i+1,data[i+1],i,data[i]); //put smaller number before larger
-				i++; //increment lo index
-			}
-		}
-		int p = start; //to fix the partition index
-		for (int q = start + 1; q <= end; q++) { //travel thru rest
-			if (data[q] < data[start]) {
-				p = q; //get correct index if current val is smaller than start
-			}
-			else if (data[q] > data[start]) {
-				q = end + 1; //get correct index if current val is greater than start
-			}
-		}
-		swap(data,start,data[start],p,data[p]); //swap the starting value and the corrected index to complete
-		return p; //partition index
-	}
+  private static int medianI(int[]data, int start, int end) {
+    int mid = (end+start)/2;
+    if ((start - end) * (mid - start) >= 0) // a >= b and a <= c OR a <= b and a >= c
+      return start;
+    else if ((end - start) * (mid - end) >= 0) // b >= a and b <= c OR b <= a and b >= c
+      return end;
+    else {
+      return mid;
+    }
+  }
 
-	public static int quickSelectH(int[]data, int k, int lo, int hi) {
-		int pivot = 0;
-		while (pivot != k) {
-			pivot = partition(data,lo,hi);
-			if (pivot < k) {
-				lo = pivot + 1;
-			}
-			else {
-				hi = pivot - 1;
-			}
-		}
-		return data[k];
-	}
+	public static int partition(int[] data, int start, int end) {
+      Random rand = new Random();
+      int pivotInd = medianI(data,start,end);
+      int pivotVal = data[pivotInd];
+      swap(data, pivotInd, pivotVal, start, data[start]);
+      pivotInd = start + 1;
+      int upperBound = end;
+      while (pivotInd != upperBound){
+        int rando = rand.nextInt(2); 
+        if (data[pivotInd] > pivotVal || data[pivotInd] == pivotVal && rando == 0){
+          swap(data, pivotInd, data[pivotInd], upperBound, data[upperBound]);
+          upperBound--;
+        }else{
+          pivotInd++;
+        }
+      }
+      if (data[pivotInd] < pivotVal) {
+        swap(data, pivotInd, data[pivotInd], start, data[start]);
+        return pivotInd;
+      }
+      swap(data, pivotInd-1, data[pivotInd-1], start, data[start]);
+      return pivotInd-1;
+  }
 
 	public static int quickselect(int[]data, int k) {
-		return quickSelectH(data,k,0,data.length-1);
+    int[] crew = data;
+    quicksort(crew);
+    return crew[k];
 	}
 
 	public static void quickSortH(int[]data, int lo, int hi) {
@@ -67,12 +62,4 @@ public class Quick {
 	public static void quicksort(int[] data) {
 		quickSortH(data, 0, data.length-1);
 	}
-
-	public static String toStringDebug(int[] data){
-      String result = "";
-      for (int i = 0; i < data.length; i++){
-          result += data[i];
-      }
-      return result;
-    }
 }
